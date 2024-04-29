@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Output</title>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #output {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            padding: 20px;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script>
+        fetch(`/getBlackList`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                var bl_text = document.createElement('pre');
+                bl_text.innerHTML = data['text'];
+                document.getElementById('output').appendChild(bl_text);
+            })
+    </script>
+</body>
+</html>

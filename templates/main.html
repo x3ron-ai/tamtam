@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Output</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .userPad {
+            text-align: center;
+            border: 1px solid black;
+            box-shadow: blue 0px 0px 44px;
+            width: 300px;
+            height: 200px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        button {
+            margin: auto;
+            padding: 8px;
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; width: 100%; height: 100%">
+        <div class="userPad">
+            <button id="quotas" onclick="window.location.replace('/quotas')" >ПОИСК ЦИТАТ ИЗ ДАТАСЕТА</button>
+            <button id="blacklist" onclick="window.location.replace('/blacklist')">ПРОВЕРКА ССЫЛОК</button>    
+        </div>
+    </div>
+</body>
+</html>

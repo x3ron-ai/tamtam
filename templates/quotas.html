@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Output</title>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #output {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            padding: 20px;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <select name="" id="fileSelector">
+        
+    </select>
+
+    <div id="output"></div>
+
+    <script>
+        function getFileData(filePath) {
+            fetch(`/getData?file=${filePath}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка запроса: ${response.status} ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    fileSelector.disabled = false;
+                    var outputWindow = document.getElementById('output');
+                    outputWindow.innerHTML = '';
+                    console.log(data);
+                    for (i = 0; i < data['urls'].length; i++) {
+                        console.log(i);
+                        var elem = data['urls'][i];
+                        if (elem[0] == '-') {
+                            continue;
+                        }
+                        else {
+                            elem[0] = elem[0].replace('title=', '')
+                            var block = document.createElement('pre');
+                            block.innerHTML = `${elem[0]}\n\t${elem[1]}\n\t${elem[2]}\n\t${elem[3]}\n\t${elem[4]}\n\t${elem[5]}\n`
+                            outputWindow.appendChild(block);
+                            console.log(block);
+                        }
+                    }
+
+                    categoriesBlock = document.createElement('pre');
+                    categoriesBlock.innerHTML = `Категории: ${data['categories'].join(', ')}`
+                    outputWindow.appendChild(categoriesBlock);
+                })
+        }
+    </script>
+
+    <script>
+        var fileSelector = document.getElementById('fileSelector');
+        var fileList;
+        fetch(`/getfiles`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                fileList = data;
+                for (var i = 0; i < data.length; i++) {
+                    var filePath = document.createElement('option');
+                    filePath.text = data[i].split("\\").slice(-1);
+                    filePath.value = i;
+                    fileSelector.appendChild(filePath);
+                }
+            })
+
+        fileSelector.addEventListener("change", function() {
+            fileSelector.disabled = true;
+            var fileData;
+            getFileData(fileList[fileSelector.value]);
+        })
+    </script>
+</body>
+</html>
